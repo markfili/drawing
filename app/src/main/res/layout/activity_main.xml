@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <hr.mfilipovic.drawing.ValueBar
+        android:id="@+id/valueBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        custom:barHeight="@dimen/value_bar_barHeight"
+        custom:baseColor="@color/navy"
+        custom:circleRadius="@dimen/value_bar_circleRadius"
+        custom:circleTextColor="@color/white"
+        custom:circleTextSize="@dimen/value_bar_circleTextSize"
+        custom:fillColor="@color/red"
+        android:padding="@dimen/activity_vertical_margin"
+        custom:labelText="@string/valueBarLabel"
+        custom:labelTextColor="@color/navy"
+        custom:labelTextSize="@dimen/value_bar_labelTextSize"
+        custom:maxValueTextColor="@color/navy"
+        custom:maxValueTextSize="@dimen/value_bar_maxValueTextSize"
+        custom:spaceAfterBar="@dimen/value_bar_spaceAfterBar"/>
+
+
+    <!--<ScrollView-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:scrollbarDefaultDelayBeforeFade="100"-->
+    <!--android:scrollbarFadeDuration="300"-->
+    <!--android:scrollbarSize="16dp"-->
+    <!--android:scrollbarThumbVertical="@color/colorPrimaryDark"-->
+    <!--android:scrollbars="vertical">-->
+
+    <!-- TODO drag and drop views -->
+
+    <!--<LinearLayout-->
+    <!--android:id="@+id/parent"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:animateLayoutChanges="true"-->
+    <!--android:divider="@drawable/divider_horizontal"-->
+    <!--android:orientation="vertical"-->
+    <!--android:showDividers="middle">-->
+
+    <!--<TextView-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="50dp"-->
+    <!--android:gravity="center"-->
+    <!--android:text="1"-->
+    <!--android:textSize="20sp"/>-->
+
+    <!--<TextView-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="50dp"-->
+    <!--android:gravity="center"-->
+    <!--android:text="2"-->
+    <!--android:textSize="20sp"/>-->
+
+    <!--<TextView-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="50dp"-->
+    <!--android:gravity="center"-->
+    <!--android:text="3"-->
+    <!--android:textSize="20sp"/>-->
+
+    <!--<TextView-->
+    <!--android:id="@+id/textView"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="50dp"-->
+    <!--android:gravity="center"-->
+    <!--android:text="4"-->
+    <!--android:textSize="20sp"/>-->
+
+    <!--<TextView-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="50dp"-->
+    <!--android:gravity="center"-->
+    <!--android:text="5"-->
+    <!--android:textSize="20sp"/>-->
+    <!--</LinearLayout>-->
+    <!--&lt;!&ndash;</ScrollView>&ndash;&gt;-->
+
+    <!--<EditText-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_gravity="bottom"/>-->
+
+    <!-- end of TODO drag and drop views -->
+
+</FrameLayout>
