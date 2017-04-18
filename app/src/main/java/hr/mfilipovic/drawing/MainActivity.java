@@ -9,6 +9,7 @@ import android.view.View;
 public class MainActivity extends AppCompatActivity {
 
     public static final String TAG = "MainActivity";
+    private int value;
 
 
 //    ToggleButton toggle;
@@ -21,8 +22,15 @@ public class MainActivity extends AppCompatActivity {
 
         ValueBar valueBar = (ValueBar) findViewById(R.id.valueBar);
 
-        valueBar.setValue(20);
-
+        valueBar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (value == 100) {
+                    value = 0;
+                }
+                ((ValueBar) v).setValue(value += 5);
+            }
+        });
 
 //        View.OnLongClickListener listener = new View.OnLongClickListener() {
 //

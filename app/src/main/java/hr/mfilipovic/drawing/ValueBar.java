@@ -8,6 +8,8 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Typeface;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
@@ -160,6 +162,8 @@ public class ValueBar extends View {
     }
 
     private void init(Context context, AttributeSet attrs) {
+        // enable state saving
+        setSaveEnabled(true);
 
         // extract data from XML attributes
         TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.ValueBar, 0, 0);
@@ -260,5 +264,57 @@ public class ValueBar extends View {
             this.currentValue = newValue;
         }
         invalidate();
+    }
+
+
+    @Override
+    protected Parcelable onSaveInstanceState() {
+        Parcelable superState = super.onSaveInstanceState();
+        SavedState ss = new SavedState(superState);
+        ss.value = currentValue;
+        return ss;
+    }
+
+
+    @Override
+    protected void onRestoreInstanceState(Parcelable state) {
+        SavedState ss = (SavedState) state;
+        super.onRestoreInstanceState(((SavedState) state).getSuperState());
+        currentValue = ss.value;
+    }
+
+    private static class SavedState extends BaseSavedState {
+
+        int value; // stores current value from ValueBar
+
+        // used to save the state
+        SavedState(Parcelable superState) {
+            super(superState);
+        }
+
+        // used to extract data from the saved state
+        private SavedState(Parcel in) {
+            super(in);
+            value = in.readInt();
+        }
+
+        @Override
+        public void writeToParcel(Parcel out, int flags) {
+            super.writeToParcel(out, flags);
+            out.writeInt(value);
+        }
+
+        public static final Parcelable.Creator<SavedState> CREATOR =
+                new Parcelable.Creator<SavedState>() {
+                    @Override
+                    public SavedState createFromParcel(Parcel source) {
+                        return new SavedState(source);
+                    }
+
+                    @Override
+                    public SavedState[] newArray(int size) {
+                        return new SavedState[size];
+                    }
+                };
     }
 }
