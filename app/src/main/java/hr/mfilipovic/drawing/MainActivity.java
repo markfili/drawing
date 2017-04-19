@@ -21,6 +21,8 @@ public class MainActivity extends AppCompatActivity {
 
 
         ValueBar valueBar = (ValueBar) findViewById(R.id.valueBar);
+        valueBar.setAnimated(true);
+        valueBar.setAnimationDuration(2000L);
 
         valueBar.setOnClickListener(new View.OnClickListener() {
             @Override

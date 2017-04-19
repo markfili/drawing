@@ -1,5 +1,6 @@
 package hr.mfilipovic.drawing;
 
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
@@ -47,6 +48,15 @@ public class ValueBar extends View {
     private Paint circlePaint;
     private Paint currentValuePaint;
 
+    private ValueAnimator animation;
+
+    private boolean animated;
+
+    private long animationDuration = 4000L;
+
+    private float previousValue;
+    private float valueToDraw;
+
     public ValueBar(Context context) {
         super(context);
     }
@@ -79,7 +89,7 @@ public class ValueBar extends View {
         int size = getPaddingTop() + getPaddingBottom();
         size += labelPaint.getFontSpacing();
         float maxValueTextSpacing = maxValuePaint.getFontSpacing();
-        size += Math.max(maxValueTextSize, Math.max(barHeight, circleRadius * 2));
+        size += Math.max(maxValueTextSpacing, Math.max(barHeight, circleRadius * 2));
         return resolveSizeAndState(size, measureSpec, 0);
     }
 
@@ -146,7 +156,7 @@ public class ValueBar extends View {
         RectF rect = new RectF(left, top, right, bottom);
         canvas.drawRoundRect(rect, halfBarHeight, halfBarHeight, barBasePaint);
 
-        float percentageFilled = (float) currentValue / maxValue;
+        float percentageFilled = (float) valueToDraw / maxValue;
         float fillLength = percentageFilled * barLength;
         float fillPosition = left + fillLength;
         RectF fillRect = new RectF(left, top, fillPosition, bottom);
@@ -154,7 +164,7 @@ public class ValueBar extends View {
 
         canvas.drawCircle(fillPosition, barCenter, circleRadius, circlePaint);
 
-        String currentValueString = String.valueOf(currentValue);
+        String currentValueString = String.valueOf(valueToDraw);
         Rect currentValueRect = new Rect();
         currentValuePaint.getTextBounds(currentValueString, 0, currentValueString.length(), currentValueRect);
         float y = halfBarHeight + currentValueRect.height() / 2;
@@ -256,6 +266,7 @@ public class ValueBar extends View {
     }
 
     public void setValue(int newValue) {
+        previousValue = currentValue;
         if (newValue < 0) {
             this.currentValue = 0;
         } else if (newValue > this.maxValue) {
@@ -263,9 +274,37 @@ public class ValueBar extends View {
         } else {
             this.currentValue = newValue;
         }
+
+        if (animation != null) {
+            animation.cancel();
+        }
+        if (animated) {
+            animation = ValueAnimator.ofFloat(previousValue, currentValue);
+
+            int changeInValue = (int) Math.abs(currentValue - previousValue);
+            long durationToUse = (long) (animationDuration * ((float) changeInValue / (float) maxValue));
+            animation.setDuration(durationToUse);
+            animation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                @Override
+                public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                    valueToDraw = (float) valueAnimator.getAnimatedValue();
+                    ValueBar.this.invalidate();
+                }
+            });
+            animation.start();
+        } else {
+            valueToDraw = currentValue;
+        }
         invalidate();
     }
 
+    public void setAnimated(boolean animated) {
+        this.animated = animated;
+    }
+
+    public void setAnimationDuration(long animationDuration) {
+        this.animationDuration = animationDuration;
+    }
 
     @Override
     protected Parcelable onSaveInstanceState() {
@@ -275,12 +314,12 @@ public class ValueBar extends View {
         return ss;
     }
 
-
     @Override
     protected void onRestoreInstanceState(Parcelable state) {
         SavedState ss = (SavedState) state;
         super.onRestoreInstanceState(((SavedState) state).getSuperState());
         currentValue = ss.value;
+        valueToDraw = currentValue;
     }
 
     private static class SavedState extends BaseSavedState {
